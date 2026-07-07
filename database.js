@@ -166,32 +166,32 @@ const userOps = {
     return userId;
   },
 
-  // Used ONLY by the waitlist site's registration endpoint. Creates a real
-  // row in the exact same 'users' collection/schema the main app reads from,
-  // using the same auto-incrementing id counter ('counters/users') that the
-  // main app uses. The account is marked is_onboarded: 0 because
-  // gender/avatar/bio/username haven't been chosen yet -- the user finishes
-  // that via the main app's existing /api/auth/complete-profile flow the
-  // first time they log in after launch.
-  async createFromWaitlist(email, passwordHash, fullName) {
+  // Used ONLY by the waitlist site's /api/waitlist/complete-profile endpoint.
+  // Creates a real row in the exact same 'users' collection/schema the main
+  // app reads from, using the same auto-incrementing id counter
+  // ('counters/users') the main app uses. The profile (username, gender,
+  // bio, hobbies, avatar, E2EE keys) is collected up front on the dedicated
+  // /complete-profile page, so the account is created already fully
+  // onboarded (is_onboarded: 1) -- there is no separate later onboarding
+  // step for waitlist users.
+  async createFromWaitlist(email, passwordHash, profile = {}) {
     const userId = await getNextId('users');
     const ecosystem = getEcosystem(email);
     const userDocRef = getDB().collection('users').doc(String(userId));
     await userDocRef.set({
       id: userId,
-      username: null,
-      gender: null,
+      username: profile.username || null,
+      gender: profile.gender || null,
       email,
       passcode_hash: passwordHash,
-      bio: '',
-      hobbies: [],
-      avatar: '',
-      is_onboarded: 0,
+      bio: profile.bio || '',
+      hobbies: profile.hobbies || [],
+      avatar: profile.avatar || '',
+      is_onboarded: 1,
       ecosystem,
-      full_name: fullName || null,
       registered_via: 'waitlist',
-      public_key: null,
-      encrypted_private_key: null,
+      public_key: profile.publicKey || null,
+      encrypted_private_key: profile.encryptedPrivateKey || null,
       created_at: new Date().toISOString()
     });
     return userId;
