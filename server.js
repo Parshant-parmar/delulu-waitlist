@@ -78,7 +78,9 @@ app.post('/api/waitlist/send-verification-email', linkLimiter, async (req, res) 
     const token = await linkStore.createToken(email);
     const protocol = req.headers['x-forwarded-proto'] || 'http';
     const host = req.headers.host;
-    const verifyLink = `${protocol}://${host}/?token=${token}&email=${encodeURIComponent(email)}`;
+    // Points at the dedicated profile-completion page, NOT the waitlist
+    // landing page -- clicking the email link should never reopen index.html.
+    const verifyLink = `${protocol}://${host}/complete-profile?token=${token}&email=${encodeURIComponent(email)}`;
 
     const html = `
       <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center; border: 1px solid #dec0ba; border-radius: 16px;">
@@ -113,42 +115,72 @@ app.post('/api/waitlist/verify-token', verifyLimiter, async (req, res) => {
   }
 });
 
-// ---- API: complete registration ----
-// This creates a REAL account in the same 'users' collection, using the
-// same password hashing and duplicate-email rules the main app's own
-// registration flow uses. There is no separate waitlist-only user record.
-app.post('/api/waitlist/register', registerLimiter, async (req, res) => {
+// ---- API: complete profile & registration ----
+// This is the ONLY registration endpoint now. It creates a REAL account in
+// the same 'users' collection the main app reads/writes, using the same
+// field set, password hashing, and duplicate-email rules as the main app's
+// own /api/auth/complete-profile flow. There is no separate waitlist-only
+// user record -- registered_via: 'waitlist' just tags where the account
+// originated.
+const AVATAR_PATTERN = /^(male|female)_(0[1-9]|10)$/;
+
+app.post('/api/waitlist/complete-profile', registerLimiter, async (req, res) => {
   try {
     const email = normalizeEmail(req.body.email);
-    const name = String(req.body.name || '').trim();
+    const username = String(req.body.username || '').trim();
     const password = String(req.body.password || '');
+    const gender = String(req.body.gender || '').trim();
+    const bio = String(req.body.bio || '').trim();
+    const hobbies = Array.isArray(req.body.hobbies) ? req.body.hobbies.map((h) => String(h).trim()).filter(Boolean) : [];
+    const avatar = String(req.body.avatar || '').trim();
+    const publicKey = req.body.public_key || null;
+    const encryptedPrivateKey = req.body.encrypted_private_key || null;
 
-    if (!email || !name) return res.status(400).json({ error: 'Name and email are required.' });
-    if (name.length < 2 || name.length > 60) return res.status(400).json({ error: 'Name must be between 2 and 60 characters.' });
-    if (!isAllowedCollegeEmail(email)) return res.status(400).json({ error: 'Only authorized university emails are allowed.' });
-
-    // Same password rule as the main app's registration flow.
+    if (!email || !isAllowedCollegeEmail(email)) {
+      return res.status(400).json({ error: 'Only authorized university emails are allowed.' });
+    }
+    if (!username || username.length < 3 || username.length > 30) {
+      return res.status(400).json({ error: 'Username must be between 3 and 30 characters.' });
+    }
     if (!password || password.length < 6) {
       return res.status(400).json({ error: 'Password must be at least 6 characters.' });
+    }
+    if (!['male', 'female', 'other'].includes(gender)) {
+      return res.status(400).json({ error: 'Please select a gender.' });
+    }
+    if (!avatar || !AVATAR_PATTERN.test(avatar)) {
+      return res.status(400).json({ error: 'Please select a valid avatar.' });
     }
 
     const verified = await linkStore.isVerified(email);
     if (!verified) return res.status(401).json({ error: 'Please verify your college email first.' });
 
-    // Duplicate check against the real users collection (guards races too).
-    const existingUser = await userOps.getByEmail(email);
-    if (existingUser) {
+    // Duplicate checks against the real users collection (guards races too).
+    const existingByEmail = await userOps.getByEmail(email);
+    if (existingByEmail) {
       return res.status(409).json({ error: 'An account with this email already exists. Please log in instead of registering again.' });
+    }
+    const existingByUsername = await userOps.getByUsername(username);
+    if (existingByUsername) {
+      return res.status(409).json({ error: 'That username is already taken. Please choose another.' });
     }
 
     // Same hashing algorithm/cost factor the main app uses.
     const passwordHash = await bcrypt.hash(password, 10);
-    await userOps.createFromWaitlist(email, passwordHash, name);
+    await userOps.createFromWaitlist(email, passwordHash, {
+      username,
+      gender,
+      bio,
+      hobbies,
+      avatar,
+      publicKey,
+      encryptedPrivateKey
+    });
 
     const count = await waitlistCounter.getCount();
     res.json({ success: true, count });
   } catch (err) {
-    console.error('register error:', err.message);
+    console.error('complete-profile error:', err.message);
     res.status(500).json({ error: 'Failed to complete registration. Please try again.' });
   }
 });
@@ -166,6 +198,12 @@ app.get('/api/waitlist/count', async (req, res) => {
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Dedicated page opened only from the verification email link. Contains
+// nothing but the profile creation form -- never the landing page.
+app.get('/complete-profile', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'complete-profile.html'));
 });
 
 const PORT = process.env.PORT || 4000;
