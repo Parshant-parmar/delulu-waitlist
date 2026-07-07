@@ -5,27 +5,20 @@
     heroCounter: document.getElementById('hero-counter'),
     stageEmail: document.getElementById('stage-email'),
     stageOtp: document.getElementById('stage-otp'),
-    stageProfile: document.getElementById('stage-profile'),
-    stageDone: document.getElementById('stage-done'),
     formEmail: document.getElementById('form-email'),
-    formProfile: document.getElementById('form-profile'),
     inputEmail: document.getElementById('input-email'),
-    profileName: document.getElementById('profile-name'),
-    profilePassword: document.getElementById('profile-password'),
     emailError: document.getElementById('email-error'),
     otpError: document.getElementById('otp-error'),
-    profileError: document.getElementById('profile-error'),
     otpEmailDisplay: document.getElementById('otp-email-display'),
     btnBackEmail: document.getElementById('btn-back-email'),
     btnResendLink: document.getElementById('btn-resend-link'),
-    finalCount: document.getElementById('final-count'),
     dots: [1, 2, 3].map((n) => document.getElementById(`step-dot-${n}`))
   };
 
   let state = { email: '' };
 
   function showStage(stage) {
-    [els.stageEmail, els.stageOtp, els.stageProfile, els.stageDone].forEach((el) => el.classList.add('hidden'));
+    [els.stageEmail, els.stageOtp].forEach((el) => el.classList.add('hidden'));
     stage.classList.remove('hidden');
     stage.classList.add('stage-enter');
   }
@@ -121,55 +114,10 @@
     setDots(0);
   });
 
-  els.formProfile.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    hideError(els.profileError);
-    const name = els.profileName.value.trim();
-    const password = els.profilePassword.value;
-    if (password.length < 6) {
-      showError(els.profileError, 'Password must be at least 6 characters.');
-      return;
-    }
-    const btn = document.getElementById('btn-register');
-    setLoading(btn, true, 'Joining…');
-    try {
-      const data = await api('/api/waitlist/register', { email: state.email, name, password });
-      els.finalCount.textContent = Number.isFinite(data.count) ? data.count : 126;
-      showStage(els.stageDone);
-      refreshCounter();
-    } catch (err) {
-      showError(els.profileError, err.message);
-    } finally {
-      setLoading(btn, false);
-    }
-  });
-
-  // If the page was opened from the verification email link, auto-verify
-  // and jump straight to the password/name step -- same pattern the main
-  // app's own login page uses for its magic link.
-  async function checkVerificationLinkOnLoad() {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
-    const email = params.get('email');
-    if (!token || !email) return;
-
-    showStage(els.stageOtp);
-    els.otpEmailDisplay.textContent = email;
-    setDots(1);
-
-    try {
-      const data = await api('/api/waitlist/verify-token', { token, email });
-      state.email = data.email || email;
-      showStage(els.stageProfile);
-      setDots(2);
-      // Clean the token out of the URL so refreshing doesn't re-submit it.
-      window.history.replaceState({}, document.title, window.location.pathname);
-    } catch (err) {
-      showError(els.otpError, err.message);
-    }
-  }
+  // Note: clicking the verification link in the email now opens the
+  // dedicated /complete-profile page directly -- this landing page never
+  // handles the token, and never shows the profile form or success card.
 
   setDots(0);
   refreshCounter();
-  checkVerificationLinkOnLoad();
 })();
