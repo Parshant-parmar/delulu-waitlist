@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+  <meta name="theme-color" content="#fbf9f8"/>
+  <title>Delulu - Complete your profile</title>
+
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-secondary-fixed": "#2b160a", "outline-variant": "#dec0ba", "on-surface": "#1b1c1c",
+            "on-tertiary": "#ffffff", "tertiary-fixed-dim": "#cbc5c2", "surface-bright": "#fbf9f8",
+            "on-tertiary-fixed-variant": "#494644", "primary": "#a53b29", "surface-dim": "#dcd9d9",
+            "on-primary-fixed-variant": "#842415", "tertiary-fixed": "#e7e1de", "error": "#ba1a1a",
+            "error-container": "#ffdad6", "inverse-surface": "#303030", "on-surface-variant": "#57423e",
+            "on-secondary-container": "#795a4a", "primary-fixed": "#ffdad4", "surface": "#fbf9f8",
+            "outline": "#8b716d", "tertiary-container": "#a8a3a0", "on-primary-container": "#731709",
+            "secondary-container": "#fdd4c0", "surface-container-low": "#f5f3f2", "surface-container": "#f0eded",
+            "surface-tint": "#a53b29", "surface-container-highest": "#e4e2e1", "secondary-fixed-dim": "#e6beab",
+            "on-background": "#1b1c1c", "on-error": "#ffffff", "secondary": "#765848",
+            "on-primary-fixed": "#3f0300", "surface-container-high": "#eae8e7", "surface-container-lowest": "#ffffff",
+            "background": "#fbf9f8", "inverse-primary": "#ffb4a6", "on-error-container": "#93000a",
+            "on-tertiary-fixed": "#1d1b19", "on-secondary": "#ffffff", "inverse-on-surface": "#f3f0f0",
+            "secondary-fixed": "#ffdbca", "primary-container": "#ff7e67", "on-primary": "#ffffff",
+            "on-tertiary-container": "#3c3a37", "on-secondary-fixed-variant": "#5c4132", "surface-variant": "#e4e2e1",
+            "primary-fixed-dim": "#ffb4a6", "tertiary": "#615e5b"
+          },
+          borderRadius: { DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px" },
+          fontFamily: { sans: ["Plus Jakarta Sans", "sans-serif"] }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #dec0ba; border-radius: 999px; }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col justify-center items-center antialiased">
+  <main class="w-full px-6 h-full flex flex-col items-center justify-center pt-8 pb-16">
+
+    <div class="text-center mb-6">
+      <h1 class="text-5xl font-bold text-primary mb-2">Delulu</h1>
+      <p class="text-on-surface-variant text-sm">Find your people on campus.</p>
+    </div>
+
+    <div class="glass-panel rounded-3xl p-8 w-full max-w-md ambient-shadow mx-auto min-h-[320px]">
+
+      <!-- ===== Loading / token check ===== -->
+      <div id="stage-loading" class="stage-enter text-center py-10">
+        <p class="text-sm text-on-surface-variant">Verifying your link…</p>
+      </div>
+
+      <!-- ===== Invalid / expired link ===== -->
+      <div id="stage-invalid" class="hidden text-center">
+        <span class="material-symbols-outlined text-error text-5xl mb-4">error</span>
+        <h2 class="text-xl font-bold text-on-surface mb-2">Link invalid or expired</h2>
+        <p id="invalid-message" class="text-sm text-on-surface-variant mb-6">This verification link is no longer valid. Please request a new one from the waitlist page.</p>
+        <a href="/" class="inline-block bg-gradient-to-r from-primary to-primary-container text-white font-bold px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition-all">
+          Back to Waitlist
+        </a>
+      </div>
+
+      <!-- ===== Complete Profile (reused from main project onboarding) ===== -->
+      <div id="stage-profile" class="hidden">
+        <h2 class="text-xl font-bold text-on-surface mb-1">Complete your profile</h2>
+        <p class="text-sm text-on-surface-variant mb-6">Just a few more details to get started</p>
+
+        <form id="form-profile" class="flex flex-col gap-4">
+          <input
+            id="profile-username"
+            type="text"
+            placeholder="Choose a username"
+            class="w-full bg-surface-container-low rounded-xl px-4 py-3 border-none focus:ring-2 focus:ring-primary/50 outline-none"
+            required
+            minlength="3"
+          >
+          <input
+            id="profile-password"
+            type="password"
+            placeholder="Choose a password (min 6 chars)"
+            class="w-full bg-surface-container-low rounded-xl px-4 py-3 border-none focus:ring-2 focus:ring-primary/50 outline-none"
+            required
+            minlength="6"
+          >
+          <select id="profile-gender" class="w-full bg-surface-container-low rounded-xl px-4 py-3 border-none focus:ring-2 focus:ring-primary/50 outline-none" required>
+            <option value="" disabled selected>I identify as...</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+            <option value="other">Other</option>
+          </select>
+          <textarea
+            id="profile-bio"
+            placeholder="A short bio..."
+            class="w-full bg-surface-container-low rounded-xl px-4 py-3 border-none focus:ring-2 focus:ring-primary/50 outline-none resize-none h-24"
+          ></textarea>
+          <input
+            id="profile-hobbies"
+            type="text"
+            placeholder="Hobbies (comma separated)"
+            class="w-full bg-surface-container-low rounded-xl px-4 py-3 border-none focus:ring-2 focus:ring-primary/50 outline-none"
+          >
+          <div id="avatar-picker-container" class="hidden flex flex-col gap-2">
+            <label class="text-sm font-bold text-on-surface-variant pl-2">Select Avatar</label>
+            <div id="avatar-grid" class="grid grid-cols-5 gap-2 max-h-40 overflow-y-auto p-2 border border-outline-variant/30 rounded-xl bg-surface-container-low custom-scrollbar">
+              <!-- Dynamically populated -->
+            </div>
+            <input type="hidden" id="profile-avatar" required>
+          </div>
+          <p id="profile-error" class="text-error text-sm font-semibold hidden"></p>
+          <button
+            type="submit"
+            class="w-full bg-gradient-to-r from-primary to-primary-container text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition-all"
+          >
+            Create Profile
+          </button>
+        </form>
+      </div>
+
+      <!-- ===== Success / Waitlist confirmation (kept from landing page design) ===== -->
+      <div id="stage-done" class="hidden text-center">
+        <span class="material-symbols-outlined text-primary text-5xl mb-4">favorite</span>
+        <h3 class="text-2xl font-extrabold text-primary mb-2">Registration Successful</h3>
+        <p class="text-4xl font-extrabold text-on-surface mb-1"><span id="final-count">126</span></p>
+        <p class="text-on-surface-variant text-sm mb-1">Students Already Joined the Waitlist</p>
+        <p class="text-on-surface-variant text-sm mb-6">The app will be launching soon.</p>
+        <button
+          type="button"
+          id="btn-ok"
+          class="w-full bg-gradient-to-r from-primary to-primary-container text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition-all"
+        >
+          OK
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="/js/crypto.js"></script>
+  <script src="/js/complete-profile.js"></script>
+</body>
+</html>

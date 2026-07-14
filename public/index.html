@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<meta name="theme-color" content="#fbf9f8"/>
+<title>Delulu — Talk first. Judge never.</title>
+<meta name="description" content="Delulu is a college-only app for building the courage to talk to someone new — real conversation first, zero judgement, no pressure. Join the waitlist."/>
+
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link rel="preload" as="image" href="/images/character_700.webp" imagesrcset="/images/character_400.webp 400w, /images/character_700.webp 700w, /images/character_1000.webp 1000w" imagesizes="(max-width: 640px) 220px, (max-width: 1024px) 300px, 380px"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-secondary-fixed": "#2b160a", "outline-variant": "#dec0ba", "on-surface": "#1b1c1c",
+          "on-tertiary": "#ffffff", "tertiary-fixed-dim": "#cbc5c2", "surface-bright": "#fbf9f8",
+          "on-tertiary-fixed-variant": "#494644", "primary": "#a53b29", "surface-dim": "#dcd9d9",
+          "on-primary-fixed-variant": "#842415", "tertiary-fixed": "#e7e1de", "error": "#ba1a1a",
+          "error-container": "#ffdad6", "inverse-surface": "#303030", "on-surface-variant": "#57423e",
+          "on-secondary-container": "#795a4a", "primary-fixed": "#ffdad4", "surface": "#fbf9f8",
+          "outline": "#8b716d", "tertiary-container": "#a8a3a0", "on-primary-container": "#731709",
+          "secondary-container": "#fdd4c0", "surface-container-low": "#f5f3f2", "surface-container": "#f0eded",
+          "surface-tint": "#a53b29", "surface-container-highest": "#e4e2e1", "secondary-fixed-dim": "#e6beab",
+          "on-background": "#1b1c1c", "on-error": "#ffffff", "secondary": "#765848",
+          "on-primary-fixed": "#3f0300", "surface-container-high": "#eae8e7", "surface-container-lowest": "#ffffff",
+          "background": "#fbf9f8", "inverse-primary": "#ffb4a6", "on-error-container": "#93000a",
+          "on-tertiary-fixed": "#1d1b19", "on-secondary": "#ffffff", "inverse-on-surface": "#f3f0f0",
+          "secondary-fixed": "#ffdbca", "primary-container": "#ff7e67", "on-primary": "#ffffff",
+          "on-tertiary-container": "#3c3a37", "on-secondary-fixed-variant": "#5c4132", "surface-variant": "#e4e2e1",
+          "primary-fixed-dim": "#ffb4a6", "tertiary": "#615e5b"
+        },
+        borderRadius: { DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px" },
+        fontFamily: { sans: ["Plus Jakarta Sans", "sans-serif"] }
+      }
+    }
+  };
+</script>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-background text-on-background min-h-screen antialiased">
+<script src="/js/heart-bg.js"></script>
+
+<!-- NAV -->
+<header class="fixed top-0 inset-x-0 z-40 backdrop-blur-md bg-background/70 border-b border-outline-variant/30">
+  <div class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+    <span class="text-2xl font-extrabold text-primary">Delulu</span>
+    <a href="#join" class="hidden sm:inline-block bg-gradient-to-r from-primary to-primary-container text-white font-bold text-sm px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all">Join Waitlist</a>
+  </div>
+</header>
+
+<main class="pt-16">
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden px-6 pt-20 pb-24 text-center">
+    <div class="hero-glow"></div>
+    <div class="hero-character hero-character--right" aria-hidden="true">
+      <img
+        src="/images/character_700.webp"
+        srcset="/images/character_400.webp 400w, /images/character_700.webp 700w, /images/character_1000.webp 1000w"
+        sizes="(max-width: 640px) 220px, (max-width: 1024px) 300px, 380px"
+        alt=""
+        width="451" height="748"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </div>
+    <div class="hero-character hero-character--left" aria-hidden="true">
+      <img
+        src="/images/character_male_700.webp"
+        srcset="/images/character_male_400.webp 400w, /images/character_male_700.webp 700w, /images/character_male_1000.webp 1000w"
+        sizes="(max-width: 640px) 200px, (max-width: 1024px) 280px, 350px"
+        alt=""
+        width="700" height="1235"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </div>
+    <div class="relative max-w-3xl mx-auto stage-enter">
+      <span class="inline-block bg-secondary-container text-on-secondary-container text-xs font-bold px-4 py-1.5 rounded-full mb-6">For verified college students only</span>
+      <h1 class="text-5xl sm:text-7xl font-extrabold text-primary leading-[1.05] mb-6">Talk first.<br/>Judge never.</h1>
+      <p class="text-lg sm:text-xl text-on-surface-variant max-w-xl mx-auto mb-10">Delulu is built for the people who never make the first move. No profile pictures, no pressure — just real conversation with someone on your campus. Friendship, connection, or something more. You decide where it goes.</p>
+      <p class="text-sm text-outline mt-4" id="hero-counter">Loading waitlist…</p>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="px-6 py-20 max-w-5xl mx-auto">
+    <div class="glass-panel rounded-3xl p-10 sm:p-14 ambient-shadow text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold text-on-surface mb-4">What is Delulu?</h2>
+      <p class="text-on-surface-variant text-lg max-w-2xl mx-auto">Delulu is a college-only app built for the courage to talk to someone new — classmates, hallmates, people in your clubs, people you'd never work up the nerve to approach in the dining hall. You connect through real conversation, not a photo grid, and reveal faces only when you're both ready. Where it goes from there — friendship, connection, or something more — is completely up to you. Verified campus by campus, so it's always someone real, from your own college.</p>
+    </div>
+  </section>
+
+  <!-- WHY DIFFERENT -->
+  <section class="px-6 py-16 max-w-6xl mx-auto">
+    <h2 class="text-3xl sm:text-4xl font-bold text-on-surface text-center mb-4">Why Delulu is different</h2>
+    <p class="text-on-surface-variant text-center max-w-xl mx-auto mb-12">Not everyone needs a dating app. Everyone needs the courage to talk to someone new. Delulu is built to take the fear out of that first move.</p>
+    <div class="grid sm:grid-cols-3 gap-6">
+      <div class="glass-panel rounded-2xl p-7 ambient-shadow">
+        <span class="material-symbols-outlined text-primary text-3xl mb-3">visibility_off</span>
+        <h3 class="font-bold text-on-surface mb-2">No looks, no judgement</h3>
+        <p class="text-sm text-on-surface-variant">No photo grid, no swiping on looks. Faces reveal only when both people choose to — so nobody's sizing you up first.</p>
+      </div>
+      <div class="glass-panel rounded-2xl p-7 ambient-shadow">
+        <span class="material-symbols-outlined text-primary text-3xl mb-3">school</span>
+        <h3 class="font-bold text-on-surface mb-2">College-verified</h3>
+        <p class="text-sm text-on-surface-variant">Every account is tied to a real college email, so everyone you meet is an actual student, from your own campus.</p>
+      </div>
+      <div class="glass-panel rounded-2xl p-7 ambient-shadow">
+        <span class="material-symbols-outlined text-primary text-3xl mb-3">chat_bubble</span>
+        <h3 class="font-bold text-on-surface mb-2">Built for real conversation</h3>
+        <p class="text-sm text-on-surface-variant">Prompts, shared interests, and voice notes make starting a conversation easy, even if you're introverted or new to campus.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="px-6 py-20 bg-surface-container-low">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl sm:text-4xl font-bold text-on-surface text-center mb-12">How it works</h2>
+      <div class="grid sm:grid-cols-4 gap-6">
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full bg-primary text-white font-bold flex items-center justify-center mx-auto mb-4">1</div>
+          <h3 class="font-bold text-on-surface mb-1">Verify</h3>
+          <p class="text-sm text-on-surface-variant">Confirm your college email address.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full bg-primary text-white font-bold flex items-center justify-center mx-auto mb-4">2</div>
+          <h3 class="font-bold text-on-surface mb-1">Build a vibe</h3>
+          <p class="text-sm text-on-surface-variant">Set up a profile around your personality and interests, not your photos.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full bg-primary text-white font-bold flex items-center justify-center mx-auto mb-4">3</div>
+          <h3 class="font-bold text-on-surface mb-1">Connect &amp; chat</h3>
+          <p class="text-sm text-on-surface-variant">Talk it out first, blind, no pressure — friendly or more, your call.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full bg-primary text-white font-bold flex items-center justify-center mx-auto mb-4">4</div>
+          <h3 class="font-bold text-on-surface mb-1">Reveal</h3>
+          <p class="text-sm text-on-surface-variant">Choose together when to share faces and take it further.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIVACY & SAFETY -->
+  <section class="px-6 py-20 max-w-5xl mx-auto">
+    <div class="glass-panel rounded-3xl p-12 sm:p-16 ambient-shadow">
+      <h2 class="text-3xl sm:text-4xl font-bold text-on-surface mb-8 text-center">Privacy &amp; safety</h2>
+      <div class="grid sm:grid-cols-2 gap-7">
+        <div class="flex gap-3 p-4">
+          <span class="material-symbols-outlined text-primary">verified_user</span>
+          <p class="text-on-surface-variant text-sm">Your college email is used only to verify you're a real student — it's never shown to other users.</p>
+        </div>
+        <div class="flex gap-3 p-4">
+          <span class="material-symbols-outlined text-primary">lock</span>
+          <p class="text-on-surface-variant text-sm">Passwords are hashed, messages are protected in transit, and photos stay hidden until you choose to reveal.</p>
+        </div>
+        <div class="flex gap-3 p-4">
+          <span class="material-symbols-outlined text-primary">flag</span>
+          <p class="text-on-surface-variant text-sm">Report and block tools are built into every chat from day one.</p>
+        </div>
+        <div class="flex gap-3 p-4">
+          <span class="material-symbols-outlined text-primary">visibility</span>
+          <p class="text-on-surface-variant text-sm">You control exactly when your identity becomes visible to a match — always mutual, never automatic.</p>
+        </div>
+        <div class="flex gap-3 p-4 sm:col-span-2">
+          <span class="material-symbols-outlined text-primary">enhanced_encryption</span>
+          <p class="text-on-surface-variant text-sm">All chats are end-to-end encrypted, so messages stay private between matched users only.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLLEGE VERIFICATION -->
+  <section class="px-6 py-20 bg-surface-container-low">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold text-on-surface mb-4">College verification</h2>
+      <p class="text-on-surface-variant max-w-2xl mx-auto mb-10">Delulu only accepts sign-ups from verified campus email domains. During the waitlist phase we're onboarding a limited set of partner colleges, with more added at launch.</p>
+      <div class="glass-panel rounded-2xl p-8 ambient-shadow inline-block text-left">
+        <ol class="space-y-3 text-on-surface-variant text-sm">
+          <li class="flex gap-3"><span class="font-bold text-primary">1.</span> Enter your official college email address.</li>
+          <li class="flex gap-3"><span class="font-bold text-primary">2.</span> We send a one-time code to that inbox.</li>
+          <li class="flex gap-3"><span class="font-bold text-primary">3.</span> Enter the code to confirm you're a real student.</li>
+          <li class="flex gap-3"><span class="font-bold text-primary">4.</span> You're officially on the waitlist.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="px-6 py-20 max-w-3xl mx-auto">
+    <h2 class="text-3xl sm:text-4xl font-bold text-on-surface text-center mb-10">FAQ</h2>
+    <div class="space-y-4" id="faq-list">
+      <details class="glass-panel rounded-2xl p-6 ambient-shadow">
+        <summary class="font-bold text-on-surface cursor-pointer">Is this a dating app?</summary>
+        <p class="text-sm text-on-surface-variant mt-3">Delulu is built around real conversation first — most people use it to build the confidence to talk to someone new, make friends, and find their people on campus. If a connection turns into something more, that's completely your call. Nothing is forced or assumed.</p>
+      </details>
+      <details class="glass-panel rounded-2xl p-6 ambient-shadow">
+        <summary class="font-bold text-on-surface cursor-pointer">Is Delulu live yet?</summary>
+        <p class="text-sm text-on-surface-variant mt-3">Not yet — we're in the pre-launch waitlist phase. Joining now reserves your place for early access.</p>
+      </details>
+      <details class="glass-panel rounded-2xl p-6 ambient-shadow">
+        <summary class="font-bold text-on-surface cursor-pointer">Which colleges are supported?</summary>
+        <p class="text-sm text-on-surface-variant mt-3">We're starting with a small set of partner campuses and expanding at launch. Only official college email domains are accepted.</p>
+      </details>
+      <details class="glass-panel rounded-2xl p-6 ambient-shadow">
+        <summary class="font-bold text-on-surface cursor-pointer">Will joining the waitlist create my account?</summary>
+        <p class="text-sm text-on-surface-variant mt-3">It reserves your spot and verifies your college email now, so sign-up is instant the moment we launch.</p>
+      </details>
+      <details class="glass-panel rounded-2xl p-6 ambient-shadow">
+        <summary class="font-bold text-on-surface cursor-pointer">Is my information safe?</summary>
+        <p class="text-sm text-on-surface-variant mt-3">Yes. Your information is securely stored, chats are end-to-end encrypted, and your personal data is never shared with other users.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- FINAL CTA / JOIN -->
+  <section id="join" class="px-6 py-24">
+    <div class="max-w-md mx-auto">
+      <div class="text-center mb-6">
+        <h2 class="text-3xl font-extrabold text-primary mb-2">Join Delulu</h2>
+        <p class="text-on-surface-variant text-sm">Be there the moment we open the doors — new friends, new circles, maybe more.</p>
+      </div>
+
+      <!-- Progress Dots -->
+      <div class="flex items-center gap-2 mb-6 justify-center" id="progress-dots">
+        <div class="step-dot active" id="step-dot-1"></div>
+        <div class="h-px w-8 bg-outline-variant" id="step-line-1"></div>
+        <div class="step-dot" id="step-dot-2"></div>
+        <div class="h-px w-8 bg-outline-variant" id="step-line-2"></div>
+        <div class="step-dot" id="step-dot-3"></div>
+      </div>
+
+      <div class="glass-panel rounded-3xl p-8 ambient-shadow min-h-[320px]">
+
+        <!-- STAGE 1: Email -->
+        <div id="stage-email" class="stage-enter">
+          <h3 class="text-xl font-bold text-on-surface mb-1">Verify your college email</h3>
+          <p class="text-sm text-on-surface-variant mb-6">Only official university email domains are accepted.</p>
+          <form id="form-email" class="flex flex-col gap-4">
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">mail</span>
+              <input id="input-email" type="email" placeholder="you@college.edu.in" required autocomplete="email"
+                class="w-full bg-surface-container-low rounded-xl pl-10 pr-4 py-3 border-none focus:ring-2 focus:ring-primary/50 outline-none">
+            </div>
+            <p id="email-error" class="text-error text-sm font-semibold hidden"></p>
+            <button type="submit" id="btn-send-otp"
+              class="w-full bg-gradient-to-r from-primary to-primary-container text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-50">
+              Send Verification Link
+            </button>
+          </form>
+        </div>
+
+        <!-- STAGE 2: Check your email -->
+        <div id="stage-otp" class="hidden">
+          <h3 class="text-xl font-bold text-on-surface mb-1">Check your inbox</h3>
+          <p class="text-sm text-on-surface-variant mb-1">We sent a verification link to</p>
+          <p id="otp-email-display" class="text-sm font-semibold text-primary mb-6"></p>
+          <p class="text-sm text-on-surface-variant mb-6">Click the link in that email to continue — this page will pick up automatically once you do.</p>
+          <p id="otp-error" class="text-error text-sm font-semibold hidden"></p>
+          <div class="flex flex-col gap-4">
+            <button type="button" id="btn-resend-link"
+              class="w-full bg-gradient-to-r from-primary to-primary-container text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-50">
+              Resend Link
+            </button>
+            <button type="button" id="btn-back-email" class="text-sm text-on-surface-variant hover:text-primary transition-colors">
+              ← Use a different email
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="px-6 py-10 text-center text-outline text-sm border-t border-outline-variant/30">
+    © <span id="year"></span> Delulu. All rights reserved.
+  </footer>
+
+</main>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
