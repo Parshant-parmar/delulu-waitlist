@@ -1,6 +1,10 @@
 (function () {
-  // Number of available avatar images per gender in /public/avatars (male_01..male_NN.png, female_01..female_NN.png)
-  const AVATAR_COUNTS = { male: 25, female: 30 };
+  // Exact avatar image numbers available on disk in /public/Avatar1/male and /public/Avatar1/female
+  // (these lists match the actual files present - gaps/renamed files are accounted for)
+  const AVATAR_NUMS = {
+    male: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+    female: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+  };
 
   const stageLoading = document.getElementById('stage-loading');
   const stageInvalid = document.getElementById('stage-invalid');
@@ -52,20 +56,20 @@
     avatarPickerContainer.classList.remove('hidden');
     let avatars = [];
     if (gender === 'male') {
-      for (let i = 1; i <= AVATAR_COUNTS.male; i++) avatars.push(`male_${String(i).padStart(2, '0')}`);
+      AVATAR_NUMS.male.forEach((n) => avatars.push(`male_${n}`));
     } else if (gender === 'female') {
-      for (let i = 1; i <= AVATAR_COUNTS.female; i++) avatars.push(`female_${String(i).padStart(2, '0')}`);
+      AVATAR_NUMS.female.forEach((n) => avatars.push(`female_${n}`));
     } else {
-      const max = Math.max(AVATAR_COUNTS.male, AVATAR_COUNTS.female);
-      for (let i = 1; i <= max; i++) {
-        if (i <= AVATAR_COUNTS.female) avatars.push(`female_${String(i).padStart(2, '0')}`);
-        if (i <= AVATAR_COUNTS.male) avatars.push(`male_${String(i).padStart(2, '0')}`);
+      const max = Math.max(AVATAR_NUMS.male.length, AVATAR_NUMS.female.length);
+      for (let i = 0; i < max; i++) {
+        if (AVATAR_NUMS.female[i] !== undefined) avatars.push(`female_${AVATAR_NUMS.female[i]}`);
+        if (AVATAR_NUMS.male[i] !== undefined) avatars.push(`male_${AVATAR_NUMS.male[i]}`);
       }
     }
 
     avatars.forEach((av) => {
       const [avGender, avNum] = av.split('_');
-      const avatarSrc = `/Avatar1/${avGender}/${parseInt(avNum, 10)}.png`;
+      const avatarSrc = `/Avatar1/${avGender}/${avNum}.png`;
       const wrapper = document.createElement('div');
       wrapper.className = 'avatar-card aspect-square rounded-xl overflow-hidden cursor-pointer flex items-center justify-center bg-surface-container';
       wrapper.innerHTML = `<img src="${avatarSrc}" alt="Avatar option" loading="lazy" class="w-full h-full object-contain">`;
