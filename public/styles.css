@@ -181,3 +181,39 @@ section, header, footer {
 .step-dot.completed {
   background: #842415;
 }
+
+/* Avatar picker cards */
+.avatar-grid {
+  scroll-behavior: smooth;
+}
+
+.avatar-card {
+  position: relative;
+  padding: 6px;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 8px rgba(27, 28, 28, 0.08);
+  transition: transform 280ms ease, box-shadow 280ms ease, border-color 280ms ease;
+  background-color: #f5f3f2;
+}
+
+.avatar-card img {
+  background: transparent;
+  transition: transform 280ms ease;
+}
+
+.avatar-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(27, 28, 28, 0.14);
+}
+
+.avatar-card--selected {
+  border-color: #E65A4F;
+  box-shadow: 0 0 0 4px rgba(230, 90, 79, 0.18), 0 8px 22px rgba(230, 90, 79, 0.28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-card,
+  .avatar-card img {
+    transition: none;
+  }
+}
