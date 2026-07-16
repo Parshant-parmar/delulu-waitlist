@@ -94,11 +94,13 @@ section, header, footer {
 }
 
 /* Hero decorative characters */
+/* Hero decorative characters */
 .hero-character {
   position: absolute;
   z-index: 1; /* above hero-glow (0) and heart canvas, below hero text */
   bottom: -18px;
   width: clamp(160px, 22vw, 300px);
+  height: clamp(240px, 34vw, 460px);
   pointer-events: none;
   opacity: 0.98;
   -webkit-mask-image: radial-gradient(ellipse at 50% 45%, black 55%, transparent 82%);
@@ -111,7 +113,9 @@ section, header, footer {
 
 .hero-character img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
   display: block;
 }
 
@@ -122,6 +126,7 @@ section, header, footer {
 .hero-character--left {
   left: 2%;
   width: clamp(150px, 20vw, 270px);
+  height: clamp(220px, 31vw, 410px);
   opacity: 0.86;
   animation-delay: -3s; /* offset so both don't bob in sync */
 }
