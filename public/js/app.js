@@ -67,9 +67,9 @@
       const res = await fetch('/api/waitlist/count');
       const data = await res.json();
       const count = res.ok && Number.isFinite(data.count) ? data.count : 126;
-      els.heroCounter.textContent = `${count} Students Already Joined the Waitlist`;
+      els.heroCounter.textContent = `${count} students have joined. `;
     } catch (e) {
-      els.heroCounter.textContent = '126 Students Already Joined the Waitlist';
+      els.heroCounter.textContent = '126 students have joined.';
     }
   }
 
